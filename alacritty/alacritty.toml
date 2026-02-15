@@ -1,0 +1,126 @@
+# Alacritty Configuration
+
+# Window configuration
+[window]
+padding = { x = 10, y = 10 }
+dynamic_padding = true
+decorations = "Full"
+startup_mode = "Windowed"
+opacity = 0.95
+
+# Font configuration
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
+size = 14.0
+offset = { x = 0, y = 0 }
+glyph_offset = { x = 0, y = 0 }
+
+
+# Cursor settings
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 750
+unfocused_hollow = true
+thickness = 0.15
+
+# Scrolling settings
+[scrolling]
+history = 10000
+multiplier = 3
+
+# Selection settings
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+# Mouse settings
+[mouse]
+hide_when_typing = true
+
+# Terminal settings
+[terminal]
+# Fix for shell deprecation warning
+shell = { program = "/bin/zsh", args = ["-l"] }
+
+# Key bindings
+[[keyboard.bindings]]
+key = "V"
+mods = "Control"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "Insert"
+mods = "Shift"
+action = "PasteSelection"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "F11"
+action = "ToggleFullscreen"
+
+# tmux-specific configurations
+# Create new tmux window
+[[keyboard.bindings]]
+key = "T"
+mods = "Command"
+action = "SpawnNewInstance"
+
+# Tmux prefix key (Ctrl+b) pass-through binding
+[[keyboard.bindings]]
+key = "B"
+mods = "Control"
+chars = "\u0002"  # Ctrl+B: tmux prefix
+
+# Alt+arrow keys for tmux pane navigation
+[[keyboard.bindings]]
+key = "Left"
+mods = "Alt"
+chars = "\u001bb"  # Alt+Left: tmux previous-window
+
+[[keyboard.bindings]]
+key = "Right"
+mods = "Alt"
+chars = "\u001bf"  # Alt+Right: tmux next-window
+
+# Enhanced alt key handling for tmux
+
+# Bell settings
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+color = "#D8DEE9"
+
+# Optimize for tmux
+[env]
+TERM = "xterm-256color"
+
+# ~/.config/alacritty/alacritty.toml
+[general]
+import = ["rose-pine.toml"]
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
