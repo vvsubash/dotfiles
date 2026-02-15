@@ -51,10 +51,6 @@ brew install --quiet \
   2>/dev/null || true
 
 info "Installing brew casks..."
-brew install --cask --quiet \
-  alacritty \
-  font-jetbrains-mono-nerd-font \
-  2>/dev/null || true
 
 # ── TPM (Tmux Plugin Manager) ───────────────────────────
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
