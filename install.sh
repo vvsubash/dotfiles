@@ -81,9 +81,8 @@ link "$DOTFILES/alacritty/rose-pine.toml"       "$HOME/.config/alacritty/rose-pi
 link "$DOTFILES/alacritty/rose-pine-moon.toml"  "$HOME/.config/alacritty/rose-pine-moon.toml"
 link "$DOTFILES/alacritty/rose-pine-dawn.toml"  "$HOME/.config/alacritty/rose-pine-dawn.toml"
 
-# Neovim
-mkdir -p "$HOME/.config/nvim"
-link "$DOTFILES/nvim/init.lua"  "$HOME/.config/nvim/init.lua"
+# Neovim (symlink the entire nvim/ directory)
+link "$DOTFILES/nvim"  "$HOME/.config/nvim"
 
 # Tmux
 link "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
