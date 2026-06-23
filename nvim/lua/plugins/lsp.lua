@@ -40,6 +40,20 @@ return {
       })
     end
 
+    -- Configure diagnostic options (show errors inline as virtual text)
+    vim.diagnostic.config({
+      virtual_text = {
+        spacing = 4,
+        source = "if_many",
+        prefix = "●",
+      },
+      severity_sort = true,
+      float = {
+        border = "rounded",
+        source = "always",
+      },
+    })
+
     -- Basic LSP keymaps
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
