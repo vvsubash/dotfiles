@@ -11,7 +11,7 @@ export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
 
 # Deno
-. "$HOME/.deno/env"
+# . "$HOME/.deno/env"
 
 # Zsh completions
 autoload -Uz compinit
@@ -29,3 +29,18 @@ export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Aliases
 alias gitvvs='git config --local credential.https://github.com.username vvsubash'
+
+# Added by Antigravity
+export PATH="/Users/gayatri/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/venkat/.antigravity/antigravity/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/gayatri/.local/bin:$PATH"
+export PATH="/Users/gayatri/.local/bin:$PATH"
+
+# Python aliases
+alias python='python3'
+alias pip='pip3'

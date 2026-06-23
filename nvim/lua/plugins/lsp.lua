@@ -18,16 +18,6 @@ return {
       ensure_installed = { "sqls" }, -- Install SQL language server
     })
 
-    local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
-    if not lspconfig_ok then return end
-
-    -- Automatically setup LSPs installed via Mason
-    mason_lspconfig.setup_handlers({
-      function(server_name)
-        lspconfig[server_name].setup({})
-      end,
-    })
-
     -- Basic LSP keymaps
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
