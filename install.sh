@@ -83,6 +83,10 @@ link "$DOTFILES/nvim"  "$HOME/.config/nvim"
 # Tmux
 link "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
+# Custom Scripts
+link "$DOTFILES/bin/flow" "$HOME/.local/bin/flow"
+chmod +x "$HOME/.local/bin/flow"
+
 # ── Post-install ─────────────────────────────────────────
 info "Installing tmux plugins (press prefix + I in tmux if this fails)..."
 "$HOME/.tmux/plugins/tpm/bin/install_plugins" 2>/dev/null || warn "Start tmux and press Ctrl+Space + I to install plugins"

@@ -11,7 +11,50 @@ return {
 
     local mason_lspconfig = require("mason-lspconfig")
     mason_lspconfig.setup({
-      ensure_installed = { "sqls", "ts_ls" }, -- Install SQL and TypeScript language servers
+      ensure_installed = { "sqls", "terraformls", "tflint", "vue_ls", "ts_ls", "tailwindcss" },
+    })
+
+    -- Globally override hover and signature_help to use rounded borders (Neovim 0.11+ compatible)
+    vim.lsp.buf.hover = (function(original_hover)
+      return function(opts)
+        opts = opts or {}
+        opts.border = opts.border or "rounded"
+        return original_hover(opts)
+      end
+    end)(vim.lsp.buf.hover)
+
+    vim.lsp.buf.signature_help = (function(original_sig_help)
+      return function(opts)
+        opts = opts or {}
+        opts.border = opts.border or "rounded"
+        return original_sig_help(opts)
+      end
+    end)(vim.lsp.buf.signature_help)
+
+    -- Configure diagnostic display options explicitly
+    vim.diagnostic.config({
+      virtual_text = {
+        prefix = "●",
+        spacing = 4,
+        source = "if_many",
+      },
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
+      float = {
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = "✘",
+          [vim.diagnostic.severity.WARN]  = "▲",
+          [vim.diagnostic.severity.HINT]  = "⚑",
+          [vim.diagnostic.severity.INFO]  = "»",
+        },
+      },
     })
 
     -- Dynamically locate the global TypeScript library path (for TypeScript 7 RC)
@@ -28,27 +71,27 @@ return {
       end
     end
 
-    if global_ts_lib and vim.lsp.config then
-      vim.lsp.config("ts_ls", {
-        init_options = {
-          tsdk = global_ts_lib,
-        },
-      })
-    end
+    -- Configure TypeScript server for Vue Hybrid Mode using Neovim 0.11+ native config API
+    local vue_ts_plugin_location = vim.fn.stdpath("data")
+      .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
-    -- Configure diagnostic options (show errors inline as virtual text)
-    vim.diagnostic.config({
-      virtual_text = {
-        spacing = 4,
-        source = "if_many",
-        prefix = "●",
+    vim.lsp.config("ts_ls", {
+      init_options = {
+        tsdk = global_ts_lib,
+        plugins = {
+          {
+            name = "@vue/typescript-plugin",
+            location = vue_ts_plugin_location,
+            languages = { "javascript", "typescript", "vue" },
+          },
+        },
       },
-      severity_sort = true,
-      float = {
-        border = "rounded",
-        source = "always",
-      },
+      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
     })
+
+    -- Enable all mason-installed servers (Neovim 0.11+ API)
+    local installed = mason_lspconfig.get_installed_servers()
+    vim.lsp.enable(installed)
 
     -- Basic LSP keymaps
     vim.api.nvim_create_autocmd("LspAttach", {

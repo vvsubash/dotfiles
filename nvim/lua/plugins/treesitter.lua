@@ -7,7 +7,7 @@ return {
   build = ":TSUpdate",
   config = function()
     require("nvim-treesitter.configs").setup({
-      ensure_installed = { "lua", "javascript", "typescript", "vue", "go", "gomod", "gosum", "css", "sql" },
+      ensure_installed = { "lua", "javascript", "typescript", "vue", "go", "gomod", "gosum", "css", "sql", "terraform", "hcl" },
       highlight = { enable = true },
       indent = { enable = true },
     })

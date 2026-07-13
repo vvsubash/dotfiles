@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# Determine project directory (current working directory)
+PROJECT="$(pwd)"
+# Determine git root folder (fallback to current directory if not in git repo)
+GIT_FOLDER="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+# Generate a safe session name from the project folder
+SESSION=$(basename "$PROJECT" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-zA-Z0-9_-')
+if [ -z "$SESSION" ]; then
+  SESSION="flow"
+fi
+
+# Attach if already running
+tmux has-session -t "$SESSION" 2>/dev/null
+if [ $? -eq 0 ]; then
+  tmux attach-session -t "$SESSION"
+  exit 0
+fi
+
+# Window 1: Editor
+tmux new-session -d -s "$SESSION" -n editor -c "$PROJECT"
+tmux send-keys -t "$SESSION:editor" "nvim ." C-m
+
+# Window 2: Development
+tmux new-window -t "$SESSION" -n dev -c "$PROJECT"
+
+# Split window horizontally
+tmux split-window -h -t "$SESSION:dev" -c "$PROJECT"
+
+# Left pane: Run dev server if package.json exists, otherwise keep shell open
+if [ -f "$PROJECT/package.json" ]; then
+  if [ -f "$PROJECT/pnpm-lock.yaml" ]; then
+    pkg_manager="pnpm"
+  elif [ -f "$PROJECT/yarn.lock" ]; then
+    pkg_manager="yarn"
+  elif [ -f "$PROJECT/package-lock.json" ]; then
+    pkg_manager="npm"
+  elif [ -f "$PROJECT/bun.lockb" ] || [ -f "$PROJECT/bun.lock" ]; then
+    pkg_manager="bun"
+  else
+    pkg_manager="npm"
+  fi
+
+  if [ "$pkg_manager" = "yarn" ]; then
+    tmux send-keys -t "$SESSION:dev.0" "yarn dev" C-m
+  else
+    tmux send-keys -t "$SESSION:dev.0" "$pkg_manager run dev" C-m
+  fi
+fi
+
+# Right pane: LLM agent (agy)
+tmux send-keys -t "$SESSION:dev.1" "agy" C-m
+
+# Optional Window 3: Git (if inside a git repository)
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  tmux new-window -t "$SESSION" -n git -c "$GIT_FOLDER"
+  tmux send-keys -t "$SESSION:git" "lazygit" C-m
+fi
+
+# Focus editor window
+tmux select-window -t "$SESSION:editor"
+
+# Attach
+tmux attach-session -t "$SESSION"
+

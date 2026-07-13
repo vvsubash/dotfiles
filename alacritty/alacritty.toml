@@ -10,10 +10,10 @@ opacity = 0.95
 
 # Font configuration
 [font]
-normal = { family = "IosevkaTerm Nerd Font", style = "Regular" }
-bold = { family = "IosevkaTerm Nerd Font", style = "Bold" }
-italic = { family = "IosevkaTerm Nerd Font", style = "Italic" }
-bold_italic = { family = "IosevkaTerm Nerd Font", style = "Bold Italic" }
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "VictorMono Nerd Font", style = "Italic" }
+bold_italic = { family = "VictorMono Nerd Font", style = "Bold Italic" }
 size = 14.0
 offset = { x = 0, y = 0 }
 glyph_offset = { x = 0, y = 0 }

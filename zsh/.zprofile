@@ -5,4 +5,4 @@ source ~/.orbstack/shell/init.zsh 2>/dev/null || :
 
 
 # Added by Antigravity CLI installer
-export PATH="/Users/gayatri/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

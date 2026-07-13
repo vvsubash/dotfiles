@@ -39,3 +39,13 @@ export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Aliases
 alias gitvvs='git config --local credential.https://github.com.username vvsubash'
+alias gitvvsh='git config --local credential.https://github.com.username vvsubashshareplay'
+
+# Machine-local secrets (Azure ARM_* etc.) — never commit these
+[ -f ~/.secrets.zsh ] && source ~/.secrets.zsh
+alias n="nvim"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/venkata_subash/.local/bin:$PATH"
+export PATH="/Users/venkata_subash/.local/bin:$PATH"
