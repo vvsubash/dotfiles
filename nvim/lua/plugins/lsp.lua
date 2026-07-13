@@ -11,7 +11,7 @@ return {
 
     local mason_lspconfig = require("mason-lspconfig")
     mason_lspconfig.setup({
-      ensure_installed = { "sqls", "terraformls", "tflint", "vue_ls", "ts_ls", "tailwindcss" },
+      ensure_installed = { "sqls", "terraformls", "tflint", "vue_ls", "tailwindcss" },
     })
 
     -- Globally override hover and signature_help to use rounded borders (Neovim 0.11+ compatible)
@@ -57,40 +57,21 @@ return {
       },
     })
 
-    -- Dynamically locate the global TypeScript library path (for TypeScript 7 RC)
-    local global_ts_lib = nil
-    local npm_root_ok, npm_root_output = pcall(vim.fn.system, "npm root -g")
-    if npm_root_ok then
-      local lines = vim.split(vim.fn.trim(npm_root_output), "\n")
-      local npm_root = lines[#lines]
-      if npm_root and npm_root ~= "" then
-        local path = npm_root .. "/typescript/lib"
-        if vim.fn.isdirectory(path) == 1 then
-          global_ts_lib = path
-        end
-      end
+    -- TypeScript 7 native LSP: the global `tsc` (typescript@7) binary speaks LSP directly
+    if vim.fn.executable("tsc") == 1 then
+      vim.lsp.config("ts7", {
+        cmd = { "tsc", "--lsp", "-stdio" },
+        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+      })
+      vim.lsp.enable("ts7")
     end
 
-    -- Configure TypeScript server for Vue Hybrid Mode using Neovim 0.11+ native config API
-    local vue_ts_plugin_location = vim.fn.stdpath("data")
-      .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-
-    vim.lsp.config("ts_ls", {
-      init_options = {
-        tsdk = global_ts_lib,
-        plugins = {
-          {
-            name = "@vue/typescript-plugin",
-            location = vue_ts_plugin_location,
-            languages = { "javascript", "typescript", "vue" },
-          },
-        },
-      },
-      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
-    })
-
-    -- Enable all mason-installed servers (Neovim 0.11+ API)
-    local installed = mason_lspconfig.get_installed_servers()
+    -- Enable all mason-installed servers (Neovim 0.11+ API);
+    -- skip ts_ls if still installed — TS7 native LSP replaces it
+    local installed = vim.tbl_filter(function(s)
+      return s ~= "ts_ls"
+    end, mason_lspconfig.get_installed_servers())
     vim.lsp.enable(installed)
 
     -- Basic LSP keymaps
