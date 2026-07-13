@@ -11,16 +11,43 @@ return {
 
     local mason_lspconfig = require("mason-lspconfig")
     mason_lspconfig.setup({
-      ensure_installed = { "sqls" }, -- Install SQL language server
+      ensure_installed = { "sqls", "ts_ls" }, -- Install SQL and TypeScript language servers
     })
 
-    local lspconfig = require("lspconfig")
+    -- Dynamically locate the global TypeScript library path (for TypeScript 7 RC)
+    local global_ts_lib = nil
+    local npm_root_ok, npm_root_output = pcall(vim.fn.system, "npm root -g")
+    if npm_root_ok then
+      local lines = vim.split(vim.fn.trim(npm_root_output), "\n")
+      local npm_root = lines[#lines]
+      if npm_root and npm_root ~= "" then
+        local path = npm_root .. "/typescript/lib"
+        if vim.fn.isdirectory(path) == 1 then
+          global_ts_lib = path
+        end
+      end
+    end
 
-    -- Automatically setup LSPs installed via Mason
-    mason_lspconfig.setup_handlers({
-      function(server_name)
-        lspconfig[server_name].setup({})
-      end,
+    if global_ts_lib and vim.lsp.config then
+      vim.lsp.config("ts_ls", {
+        init_options = {
+          tsdk = global_ts_lib,
+        },
+      })
+    end
+
+    -- Configure diagnostic options (show errors inline as virtual text)
+    vim.diagnostic.config({
+      virtual_text = {
+        spacing = 4,
+        source = "if_many",
+        prefix = "●",
+      },
+      severity_sort = true,
+      float = {
+        border = "rounded",
+        source = "always",
+      },
     })
 
     -- Basic LSP keymaps
