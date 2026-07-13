@@ -1,18 +1,11 @@
 -- keymaps.lua: Arrow key training and general keymaps
 
 -- Disable arrow keys in normal, insert, and visual modes
-vim.keymap.set({ "n", "i", "v" }, "<Up>", function()
-  vim.api.nvim_echo({ { "Use k", "WarningMsg" } }, false, {})
-end)
-vim.keymap.set({ "n", "i", "v" }, "<Down>", function()
-  vim.api.nvim_echo({ { "Use j", "WarningMsg" } }, false, {})
-end)
-vim.keymap.set({ "n", "i", "v" }, "<Left>", function()
-  vim.api.nvim_echo({ { "Use h", "WarningMsg" } }, false, {})
-end)
-vim.keymap.set({ "n", "i", "v" }, "<Right>", function()
-  vim.api.nvim_echo({ { "Use l", "WarningMsg" } }, false, {})
-end)
+for arrow, key in pairs({ Up = "k", Down = "j", Left = "h", Right = "l" }) do
+  vim.keymap.set({ "n", "i", "v" }, "<" .. arrow .. ">", function()
+    vim.api.nvim_echo({ { "Use " .. key, "WarningMsg" } }, false, {})
+  end)
+end
 
 -- Use kk to exit insert mode instead of Esc
 vim.keymap.set("i", "kk", "<Esc>")

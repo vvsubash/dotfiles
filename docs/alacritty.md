@@ -72,7 +72,6 @@
 
 | Binding          | Action                        |
 |-----------------|-------------------------------|
-| `Cmd+T`          | Spawn new Alacritty instance  |
 | `Ctrl+B`         | Send tmux prefix (`Ctrl+B`)   |
 | `Alt+Left`       | Tmux previous word / window   |
 | `Alt+Right`      | Tmux next word / window       |
@@ -80,23 +79,6 @@
 ## Color Theme: Rose Pine
 
 The active theme is **Rose Pine** (dark variant), imported via `rose-pine.toml`.
-
-Three Rose Pine variants are included:
-
-| File                  | Variant | Background |
-|----------------------|---------|------------|
-| `rose-pine.toml`      | Main    | `#191724` (dark) |
-| `rose-pine-moon.toml` | Moon    | `#232136` (darker) |
-| `rose-pine-dawn.toml` | Dawn    | `#faf4ed` (light) |
-
-### Switching Themes
-
-Edit `alacritty.toml` and change the import line:
-
-```toml
-[general]
-import = ["rose-pine-moon.toml"]  # or "rose-pine-dawn.toml"
-```
 
 ## Bell
 

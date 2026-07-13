@@ -1,6 +1,6 @@
 # Dotfiles
 
-Personal development environment configuration for macOS and WSL2.
+Personal development environment configuration for macOS.
 
 ## What's Included
 
@@ -17,25 +17,15 @@ Personal development environment configuration for macOS and WSL2.
 Everything uses the [Rose Pine](https://rosepinetheme.com/) color scheme (main/dark variant):
 
 - Neovim: `rose-pine/neovim`
-- Alacritty: `rose-pine.toml` (with moon and dawn variants available)
+- Alacritty: `rose-pine.toml`
 - Tmux: `rose-pine/tmux`
 
 ## Installation
-
-### macOS
 
 ```bash
 git clone <repo-url> ~/dev/dotfiles
 cd ~/dev/dotfiles
 ./install.sh
-```
-
-### WSL2 / Linux
-
-```bash
-git clone <repo-url> ~/dev/dotfiles
-cd ~/dev/dotfiles
-./install-wsl2-nix.sh
 ```
 
 See [docs/installation.md](docs/installation.md) for full details on what gets installed and configured.
@@ -66,8 +56,6 @@ dotfiles/
   alacritty/
     alacritty.toml          # Main config
     rose-pine.toml          # Dark theme (active)
-    rose-pine-moon.toml     # Darker theme variant
-    rose-pine-dawn.toml     # Light theme variant
   git/
     .gitconfig              # User config
     ignore                  # Global gitignore
@@ -92,11 +80,10 @@ dotfiles/
     .profile                # POSIX-compatible profile
   docs/                     # Documentation
   install.sh                # macOS installer
-  install-wsl2-nix.sh       # WSL2/Nix installer
 ```
 
 ## Prerequisites
 
-- macOS or WSL2 on Windows
+- macOS
 - [IosevkaTerm Nerd Font](https://www.nerdfonts.com/) installed
 - [opencode CLI](https://github.com/sst/opencode) for the AI assistant plugin (optional)

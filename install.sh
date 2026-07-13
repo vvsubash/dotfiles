@@ -50,8 +50,6 @@ brew install --quiet \
   pnpm \
   2>/dev/null || true
 
-info "Installing brew casks..."
-
 # ── TPM (Tmux Plugin Manager) ───────────────────────────
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   info "Installing TPM..."
@@ -78,8 +76,6 @@ link "$DOTFILES/git/ignore"     "$HOME/.config/git/ignore"
 mkdir -p "$HOME/.config/alacritty"
 link "$DOTFILES/alacritty/alacritty.toml"       "$HOME/.config/alacritty/alacritty.toml"
 link "$DOTFILES/alacritty/rose-pine.toml"       "$HOME/.config/alacritty/rose-pine.toml"
-link "$DOTFILES/alacritty/rose-pine-moon.toml"  "$HOME/.config/alacritty/rose-pine-moon.toml"
-link "$DOTFILES/alacritty/rose-pine-dawn.toml"  "$HOME/.config/alacritty/rose-pine-dawn.toml"
 
 # Neovim (symlink the entire nvim/ directory)
 link "$DOTFILES/nvim"  "$HOME/.config/nvim"

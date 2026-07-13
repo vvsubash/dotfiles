@@ -7,19 +7,14 @@ return {
     "williamboman/mason-lspconfig.nvim",
   },
   config = function()
-    local mason_ok, mason = pcall(require, "mason")
-    if not mason_ok then return end
-    mason.setup()
+    require("mason").setup()
 
-    local mason_lspconfig_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
-    if not mason_lspconfig_ok then return end
-    
+    local mason_lspconfig = require("mason-lspconfig")
     mason_lspconfig.setup({
       ensure_installed = { "sqls" }, -- Install SQL language server
     })
 
-    local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
-    if not lspconfig_ok then return end
+    local lspconfig = require("lspconfig")
 
     -- Automatically setup LSPs installed via Mason
     mason_lspconfig.setup_handlers({

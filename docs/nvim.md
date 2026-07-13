@@ -9,7 +9,6 @@ The Neovim configuration lives in the `nvim/` directory using a modular layout. 
 ```
 nvim/
   init.lua                  Entry point -- loads the three modules below
-  AGENTS.md                 AI agent coding guidelines
   lua/
     options.lua             General settings (line numbers, indentation, leader)
     keymaps.lua             Arrow key training and insert-mode remaps

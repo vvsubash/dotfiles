@@ -80,13 +80,6 @@ action = "DecreaseFontSize"
 key = "F11"
 action = "ToggleFullscreen"
 
-# tmux-specific configurations
-# Create new tmux window
-[[keyboard.bindings]]
-key = "T"
-mods = "Command"
-action = "SpawnNewInstance"
-
 # Tmux prefix key (Ctrl+b) pass-through binding
 [[keyboard.bindings]]
 key = "B"
@@ -103,8 +96,6 @@ chars = "\u001bb"  # Alt+Left: tmux previous-window
 key = "Right"
 mods = "Alt"
 chars = "\u001bf"  # Alt+Right: tmux next-window
-
-# Enhanced alt key handling for tmux
 
 # Bell settings
 [bell]
