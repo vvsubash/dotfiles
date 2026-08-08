@@ -28,7 +28,7 @@ cd ~/dev/dotfiles
 ./install.sh
 ```
 
-See [docs/installation.md](docs/installation.md) for full details on what gets installed and configured.
+See [install.sh](install.sh) for full details on what gets installed and configured.
 
 ## Key Decisions
 
@@ -47,7 +47,6 @@ Detailed documentation for each component:
 - [Neovim](docs/nvim.md) -- Plugins, keymaps, and settings
 - [Tmux](docs/tmux.md) -- Prefix key, pane navigation, and plugins
 - [Zsh](docs/zsh.md) -- Shell integrations, toolchains, and aliases
-- [Installation](docs/installation.md) -- Install scripts and symlink details
 
 ## Structure
 
@@ -70,7 +69,6 @@ dotfiles/
         telescope.lua       # Fuzzy finder
         treesitter.lua      # Syntax highlighting
         neo-tree.lua        # File explorer
-        opencode.lua        # AI assistant
   tmux/
     .tmux.conf              # Tmux configuration
   zsh/
@@ -86,4 +84,3 @@ dotfiles/
 
 - macOS
 - [IosevkaTerm Nerd Font](https://www.nerdfonts.com/) installed
-- [opencode CLI](https://github.com/sst/opencode) for the AI assistant plugin (optional)

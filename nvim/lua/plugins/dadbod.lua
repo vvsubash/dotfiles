@@ -61,6 +61,5 @@ return {
   end,
   keys = {
     { '<leader>db', '<cmd>DBUIToggle<cr>', desc = 'Toggle DB UI' },
-    { '<leader>S', '<cmd>DBUIToggle<cr>', desc = 'Toggle DB UI' },
   },
 }

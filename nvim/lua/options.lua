@@ -12,3 +12,6 @@ vim.opt.exrc = true
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+-- tsrx (.tsrx) files are TSX; treat them as typescriptreact for LSP/treesitter/oxc tooling.
+vim.filetype.add({ extension = { tsrx = "typescriptreact" } })

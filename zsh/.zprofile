@@ -2,7 +2,3 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # OrbStack: command-line tools and integration
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
-
-
-# Added by Antigravity CLI installer
-export PATH="$HOME/.local/bin:$PATH"

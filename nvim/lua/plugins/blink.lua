@@ -7,7 +7,6 @@ return {
   opts = {
     keymap = { preset = 'default' },
     appearance = {
-      use_neovim_glow = true,
       nerd_font_variant = 'mono',
     },
     sources = {

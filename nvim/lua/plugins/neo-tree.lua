@@ -11,6 +11,7 @@ return {
   keys = {
     { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Neo-tree: toggle" },
     { "<leader>E", "<cmd>Neotree reveal<cr>", desc = "Neo-tree: reveal current file" },
+    { "<leader>o", "<cmd>Neotree focus<cr>", desc = "Neo-tree: focus" },
   },
   config = function()
     require("neo-tree").setup({

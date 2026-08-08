@@ -9,7 +9,6 @@
 --     telescope.lua          Fuzzy finder
 --     treesitter.lua         Syntax highlighting
 --     neo-tree.lua           File explorer
---     opencode.lua           AI assistant integration
 
 require("options")
 require("keymaps")

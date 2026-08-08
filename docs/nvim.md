@@ -18,7 +18,6 @@ nvim/
       telescope.lua         Fuzzy finder
       treesitter.lua        Syntax highlighting
       neo-tree.lua          File explorer
-      opencode.lua          AI assistant integration
 ```
 
 ### How it loads
@@ -117,30 +116,6 @@ _File: `lua/plugins/neo-tree.lua`_
 - Follows the current file automatically
 - Uses libuv file watcher for live updates
 - Hides dotfiles, gitignored files, `node_modules/`, and `.git/` by default
-
-### opencode.nvim (AI Assistant)
-
-_File: `lua/plugins/opencode.lua`_
-
-- **Plugin**: `nickjvandyke/opencode.nvim`
-- **Version**: Latest stable (`*`)
-- **Optional dependency**: `folke/snacks.nvim` (enhances input/picker UX)
-- **Prerequisite**: [opencode CLI](https://github.com/sst/opencode) must be installed
-- Sets `autoread = true` for automatic file reload on edits.
-
-| Keymap      | Mode  | Action                        |
-|------------|-------|-------------------------------|
-| `Ctrl+a`    | n, x  | Ask opencode with `@this` context |
-| `Ctrl+x`    | n, x  | Select an opencode action     |
-| `Ctrl+.`    | n, t  | Toggle opencode panel         |
-| `go`        | n, x  | Operator: add range to opencode |
-| `goo`       | n     | Add current line to opencode  |
-| `Shift+Ctrl+u` | n | Scroll opencode up            |
-| `Shift+Ctrl+d` | n | Scroll opencode down          |
-| `+`         | n     | Increment number (remapped)   |
-| `-`         | n     | Decrement number (remapped)   |
-
-Run `:checkhealth opencode` after setup to verify.
 
 ## Plugin Management
 

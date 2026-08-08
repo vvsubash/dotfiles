@@ -12,6 +12,9 @@ return {
     local mason_lspconfig = require("mason-lspconfig")
     mason_lspconfig.setup({
       ensure_installed = { "sqls", "terraformls", "tflint", "vue_ls", "tailwindcss" },
+      -- Drive vim.lsp.enable ourselves; otherwise mason-lspconfig auto-enables
+      -- every installed server (e.g. ts_ls alongside tsgo → duplicate TS clients).
+      automatic_enable = false,
     })
 
     -- Globally override hover and signature_help to use rounded borders (Neovim 0.11+ compatible)
@@ -57,20 +60,63 @@ return {
       },
     })
 
-    -- TypeScript 7 native LSP: the global `tsc` (typescript@7) binary speaks LSP directly
-    if vim.fn.executable("tsc") == 1 then
-      vim.lsp.config("ts7", {
-        cmd = { "tsc", "--lsp", "-stdio" },
-        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-        root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-      })
-      vim.lsp.enable("ts7")
+    -- TypeScript / Vue LSP routing (decided once per session from the cwd project).
+    --
+    -- Vue Language Tools v3 (vue_ls, hybrid mode) needs a *conventional* TS client
+    -- running @vue/typescript-plugin. The TS7 native server (tsgo) cannot be that
+    -- client yet: it doesn't expose the TS language-service plugin API Vue relies
+    -- on (open since 2025: https://github.com/vuejs/language-tools/issues/5381).
+    -- So Vue projects use ts_ls + vue_ls; every other project uses tsgo (TS7
+    -- native) when a tsgo binary is available, else falls back to ts_ls.
+    --
+    -- Limitation: routing keys off getcwd(), not per-buffer roots, so open one
+    -- project per session. A monorepo mixing Vue and non-Vue packages would need
+    -- per-root detection instead.
+    local function is_vue_project()
+      local cwd = vim.fn.getcwd()
+      local ok, lines = pcall(vim.fn.readfile, cwd .. "/package.json")
+      if ok and #lines > 0 then
+        local decoded = vim.json.decode(table.concat(lines, "\n")) or {}
+        local deps = vim.tbl_extend("force", decoded.dependencies or {}, decoded.devDependencies or {})
+        if deps["vue"] or deps["nuxt"] or deps["@vue/compiler-sfc"] then
+          return true
+        end
+      end
+      return vim.fn.glob(cwd .. "/vue.config.*") ~= ""
     end
 
-    -- Enable all mason-installed servers (Neovim 0.11+ API);
-    -- skip ts_ls if still installed — TS7 native LSP replaces it
+    local function has_tsgo()
+      return vim.fn.executable("tsgo") == 1
+        or vim.fn.executable(vim.fn.getcwd() .. "/node_modules/.bin/tsgo") == 1
+    end
+
+    if is_vue_project() then
+      -- Hybrid mode: ts_ls carries @vue/typescript-plugin and also serves the
+      -- project's .ts/.tsx so cross-file navigation/rename with .vue works;
+      -- vue_ls handles the SFC template/style. (vtsls is a drop-in swap here.)
+      local vue_plugin = {
+        name = "@vue/typescript-plugin",
+        location = vim.fn.stdpath("data") .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+        languages = { "vue" },
+        configNamespace = "typescript",
+      }
+      vim.lsp.config("ts_ls", {
+        init_options = { plugins = { vue_plugin } },
+        filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+      })
+      vim.lsp.enable({ "ts_ls", "vue_ls" })
+    elseif has_tsgo() then
+      vim.lsp.enable("tsgo") -- lspconfig built-in def; prefers node_modules/.bin/tsgo, else global
+    else
+      vim.lsp.enable("ts_ls") -- TS7 native not installed; use classic tsserver
+    end
+
+    -- Enable the remaining mason-installed servers. ts_ls and vue_ls are driven
+    -- explicitly above, so exclude them here — otherwise vue_ls would attach with
+    -- no TS companion (the "Could not find ts_ls/vtsls" error).
+    local explicit = { ts_ls = true, vue_ls = true }
     local installed = vim.tbl_filter(function(s)
-      return s ~= "ts_ls"
+      return not explicit[s]
     end, mason_lspconfig.get_installed_servers())
     vim.lsp.enable(installed)
 
